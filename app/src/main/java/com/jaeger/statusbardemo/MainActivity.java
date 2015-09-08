@@ -3,6 +3,7 @@ package com.jaeger.statusbardemo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         smoothSwitchScreen();
         setContentView(R.layout.activity_main);
+//        translucentBar(R.color.green);
     }
 
     @Override
@@ -54,22 +56,23 @@ public class MainActivity extends AppCompatActivity {
     public void translucentBar(int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 绘制一个和状态栏一样大小的矩形
-            View rectView = new View(this);
+            // 获取状态栏高度
             int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
             int statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+            // 绘制一个和状态栏一样高的矩形，并添加到视图中
+            View rectView = new View(this);
             LinearLayout.LayoutParams params
                     = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, statusBarHeight);
             rectView.setLayoutParams(params);
             rectView.setBackgroundColor(getResources().getColor(color));
             // 添加矩形View到布局中
-            ViewGroup view = (ViewGroup) getWindow().getDecorView();
-            view.addView(rectView);
+            ViewGroup decorView = (ViewGroup) getWindow().getDecorView();
+            decorView.addView(rectView);
+            // 设置根布局的参数
             ViewGroup rootView = (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
             rootView.setFitsSystemWindows(true);
             rootView.setClipToPadding(true);
         }
-
     }
 
 }
