@@ -3,7 +3,6 @@ package com.jaeger.statusbardemo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         smoothSwitchScreen();
         setContentView(R.layout.activity_main);
-//        translucentBar(R.color.green);
+        translucentBar(R.color.green);
     }
 
     @Override
@@ -38,12 +37,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void smoothSwitchScreen() {
-        ViewGroup rootView = ((ViewGroup) this.findViewById(android.R.id.content));
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        int statusBarHeight = getResources().getDimensionPixelSize(resourceId);
-        rootView.setPadding(0, statusBarHeight, 0, 0);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            ViewGroup rootView = ((ViewGroup) this.findViewById(android.R.id.content));
+            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            int statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+            rootView.setPadding(0, statusBarHeight, 0, 0);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+
     }
 
     /**
